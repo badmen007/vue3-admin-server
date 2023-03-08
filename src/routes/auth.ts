@@ -20,4 +20,9 @@ router.post("/register", async (ctx) => {
 router.post("/login", async (ctx) => {
   ctx.body = await loginController(ctx.request.body as UserAttributes);
 })
+
+router.get("/test", async (ctx) => {
+  ctx.body = "测试接口";
+});
+
 export default router;
