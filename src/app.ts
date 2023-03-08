@@ -12,12 +12,12 @@ const app = new Koa();
 
 // 中间件
 app.use(cors());
-app.use(bodyParser(
-  {
+app.use(
+  bodyParser({
     // 解析请求体
-    enableTypes: ['json', 'form', 'text'],
-  }
-));
+    enableTypes: ["json", "form", "text"],
+  })
+);
 app.use(logger());
 
 // routes
