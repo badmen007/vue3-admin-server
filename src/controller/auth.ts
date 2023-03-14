@@ -1,11 +1,15 @@
-import { createToken } from "./../utils/token";
+import { createToken, getInfoByToken } from "./../utils/token";
 import { UserAttributes } from "../db/models/User.model";
-import { createUser, getUserInfo } from "../services/auth";
+import { createUser, getUserInfo, getUserInfoAndRoles } from "../services/auth";
 import { ErrorResponse, SuccessResponse } from "../utils/Response";
 import errorInfo from "../constants/errorInfo";
 import { createHmac } from "../utils/createHmac";
-const { registerUserNameExistInfo, registerFailInfo, loginFailInfo } =
-  errorInfo;
+const {
+  registerUserNameExistInfo,
+  registerFailInfo,
+  loginFailInfo,
+  getUserInfoFailInfo,
+} = errorInfo;
 
 export const registerController = async (params: UserAttributes) => {
   const { username, password } = params;
@@ -53,5 +57,28 @@ export const loginController = async (params: LoginModel) => {
   }
   // 获取不到返回 登录失败
   const { code, message } = loginFailInfo;
-  return new ErrorResponse(code, message)
+  return new ErrorResponse(code, message);
+};
+
+/**
+ * 用户信息
+ * @param param string
+ */
+interface UserTokenInfo {
+  id: number;
+  username: string;
+}
+export const userInfoController = async (param = "") => {
+  const token = param.split(" ")[1];
+  if (token) {
+    // 根据token解析token信息
+    const tokenInfo = await getInfoByToken<UserTokenInfo>(token);
+    if (tokenInfo) {
+      const { id } = tokenInfo;
+      const userInfo = await getUserInfoAndRoles(id);
+      return new SuccessResponse(userInfo);
+    }
+  }
+  const { code, message } = getUserInfoFailInfo;
+  return new ErrorResponse(code, message);
 };
