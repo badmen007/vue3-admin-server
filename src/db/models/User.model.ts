@@ -8,7 +8,10 @@ import {
   Comment,
   AllowNull,
   Default,
+  BelongsToMany,
 } from "sequelize-typescript";
+import Role from "./Role.model"; // 角色表
+import UserRole from "./UserRole.model"; // 用户角色表
 
 export interface UserAttributes {
   id: number; // 用户id
@@ -18,9 +21,12 @@ export interface UserAttributes {
   mobile: string; // 手机号
   avatar: string; // 头像
   description: string; // 描述
-  isSuper: number; // 是否是超级管理员
-  status: number; // 状态
+  isSuper: 0 | 1; // 是否是超级管理员
+  status: 0 | 1; // 状态
 }
+
+// 用户表包含对应的角色
+export type UserAttributeWithRoles = UserAttributes & { roleIds: [] };
 
 interface UserCreationAttributes
   extends Optional<UserAttributes, "id" | "isSuper" | "status" | "avatar"> {}
@@ -67,6 +73,10 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Default(1)
   @Column
   status: boolean;
+
+  // 一个用户关联多个角色
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[];
 }
 
 export default User;
