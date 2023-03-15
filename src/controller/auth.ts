@@ -1,5 +1,6 @@
+import { allocUserRoleService } from "./../services/user";
 import { createToken, getInfoByToken } from "./../utils/token";
-import { UserAttributes } from "../db/models/User.model";
+import { UserAttributeWithRoles } from "../db/models/User.model";
 import { createUser, getUserInfo, getUserInfoAndRoles } from "../services/auth";
 import { ErrorResponse, SuccessResponse } from "../utils/Response";
 import errorInfo from "../constants/errorInfo";
@@ -11,8 +12,8 @@ const {
   getUserInfoFailInfo,
 } = errorInfo;
 
-export const registerController = async (params: UserAttributes) => {
-  const { username, password } = params;
+export const registerController = async (params: UserAttributeWithRoles) => {
+  const { username, password = "111111" } = params;
   // 注册前先看下用户是否已注册 getUserInfo services
   const userInfo = await getUserInfo({ username });
   if (userInfo) {
@@ -23,11 +24,13 @@ export const registerController = async (params: UserAttributes) => {
   }
   // 用户不存在
   try {
-    await createUser({
+    const { roleIds = [] } = params;
+    const result = await createUser({
       // 创建用户
       ...params,
       password: createHmac(password),
     });
+    await allocUserRoleService(result.id, roleIds);
     return new SuccessResponse({});
   } catch (err) {
     // 注册失败

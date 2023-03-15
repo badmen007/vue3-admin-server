@@ -1,6 +1,6 @@
 import Router from "@koa/router";
 import { registerController, loginController, userInfoController } from "../controller/auth";
-import { UserAttributes } from "./../db/models/User.model";
+import { UserAttributes, UserAttributeWithRoles } from "./../db/models/User.model";
 
 const router = new Router({
   prefix: "/api/auth",
@@ -10,7 +10,9 @@ const router = new Router({
  * /auth/register
  */
 router.post("/register", async (ctx) => {
-  ctx.body = await registerController(ctx.request.body as UserAttributes);
+  ctx.body = await registerController(
+    ctx.request.body as UserAttributeWithRoles
+  );
 });
 
 /**

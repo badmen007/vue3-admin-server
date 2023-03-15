@@ -5,6 +5,7 @@ import bodyParser from "koa-bodyparser";
 // routes
 import authRoutes from "./routes/auth";
 import roleRoutes from "./routes/role";
+import userRoutes from './routes/user'
 
 import "./db";
 import jwt from "koa-jwt";
@@ -47,6 +48,7 @@ app.use(logger());
 // 用户雅正路由(登录 注册)
 app.use(authRoutes.routes()).use(authRoutes.allowedMethods());
 app.use(roleRoutes.routes()).use(roleRoutes.allowedMethods());
+app.use(userRoutes.routes()).use(userRoutes.allowedMethods());
 
 // listen
 const port = process.env.PORT || 3000;
