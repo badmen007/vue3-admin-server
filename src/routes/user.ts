@@ -57,4 +57,5 @@ router.delete('/:id', async (ctx) => {
   ctx.body = await removeUserController(Number(id));
 })
 
+
 export default router

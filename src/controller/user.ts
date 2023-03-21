@@ -1,12 +1,15 @@
 import { getUserInfo } from "./../services/auth";
-import { UserAttributes, UserAttributeWithRoles } from "./../db/models/User.model";
+import {
+  UserAttributes,
+  UserAttributeWithRoles,
+} from "./../db/models/User.model";
 import { SuccessResponse, createErrorResponse } from "./../utils/Response";
 import {
   allocUserRoleService,
   destroyUserRoleByUserID,
   getAllUserService,
   updateUserService,
-  removeUserService
+  removeUserService,
 } from "../services/user";
 import errorInfo from "../constants/errorInfo";
 
@@ -14,7 +17,7 @@ const {
   allocUserRoleFailInfo,
   getUserListFailInfo,
   updateUserExistFailInfo,
-  deleteUserFailInfo
+  deleteUserFailInfo,
 } = errorInfo;
 
 // 分配用户角色
@@ -70,7 +73,7 @@ export const updateUserController = async (
 
   // 判断修改后的用户名是否已经存在其他重名用户
   const userInfo = await getUserInfo({ username });
-  if (userInfo && userInfo.id !== id) {
+  if (userInfo && userInfo.id === id) {
     return createErrorResponse(updateUserExistFailInfo);
   }
   try {
@@ -81,7 +84,7 @@ export const updateUserController = async (
       description,
       status,
     } as UserAttributes);
-    await destroyUserRoleByUserID(id)
+    await destroyUserRoleByUserID(id);
     await allocUserRoleService(id, roleIds);
     return new SuccessResponse(null, "用户信息修改成功");
   } catch (error) {
@@ -92,9 +95,9 @@ export const updateUserController = async (
 // 删除用户
 export const removeUserController = async (id: number) => {
   try {
-    await removeUserService(id)
-    return new SuccessResponse(null, "用户删除成功")
+    await removeUserService(id);
+    return new SuccessResponse(null, "用户删除成功");
   } catch (error) {
     return createErrorResponse(deleteUserFailInfo);
   }
-}
+};
