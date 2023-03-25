@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth";
 import roleRoutes from "./routes/role";
 import userRoutes from './routes/user';
 import accessRoutes from './routes/access'
+import roleAccessRoutes from './routes/roleAccess'
 
 import "./db";
 import jwt from "koa-jwt";
@@ -51,6 +52,7 @@ app.use(authRoutes.routes()).use(authRoutes.allowedMethods());
 app.use(roleRoutes.routes()).use(roleRoutes.allowedMethods());
 app.use(userRoutes.routes()).use(userRoutes.allowedMethods());
 app.use(accessRoutes.routes()).use(accessRoutes.allowedMethods());
+app.use(roleAccessRoutes.routes()).use(roleAccessRoutes.allowedMethods());
 
 // listen
 const port = process.env.PORT || 3000;

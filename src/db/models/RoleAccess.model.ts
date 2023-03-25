@@ -6,7 +6,10 @@ import {
   AutoIncrement,
   PrimaryKey,
   Comment,
+  ForeignKey,
 } from "sequelize-typescript";
+import Access from "./Access.model";
+import Role from "./Role.model";
 
 export interface RoleAccessAttributes {
   id: number;
@@ -17,18 +20,23 @@ export interface RoleAccessAttributes {
 interface RoleAccessCreationAttributes
   extends Optional<RoleAccessAttributes, "id"> {}
 @Table({ tableName: "r_a" })
-class RoleAccess extends Model<RoleAccessAttributes, RoleAccessCreationAttributes> {
+class RoleAccess extends Model<
+  RoleAccessAttributes,
+  RoleAccessCreationAttributes
+> {
   @PrimaryKey
   @AutoIncrement
   @Comment("id")
   @Column
   id: number;
 
-  @Comment('外键 关联access表id')
+  @ForeignKey(() => Access)
+  @Comment("外键 关联access表id")
   @Column
   access_id: number;
 
-  @Comment('外键 关联role表id')
+  @ForeignKey(() => Role)
+  @Comment("外键 关联role表id")
   @Column
   role_id: number;
 }
