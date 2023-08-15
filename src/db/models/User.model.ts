@@ -25,6 +25,8 @@ export interface UserAttributes {
 interface UserCreationAttributes
   extends Optional<UserAttributes, "id" | "isSuper" | "status" | "avatar"> {}
 
+export type UserAttributesWithRoles = UserAttributes & { roleIds: [] };
+
 @Table({ tableName: "user" })
 class User extends Model<UserAttributes, UserCreationAttributes> {
   @PrimaryKey //主键

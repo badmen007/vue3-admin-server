@@ -6,7 +6,7 @@ const sequelize = new Sequelize({
   timezone: "+08:00",
   dialect: "mysql",
   username: "root",
-  password: '',
+  password: 'xz147258',
   models: [__dirname + "/models/*.model.ts"],
   pool: {
     // 连接池配置
