@@ -9,16 +9,6 @@ import "./db";
 
 const app = new Koa();
 
-app.use(cors());
-app.use(
-  bodyparser({
-    // 解析请求体
-    enableTypes: ["json", "form", "text"],
-  })
-);
-
-app.use(logger());
-
 // 自定义401错误
 app.use((ctx, next) => {
   return next().catch((err) => {
@@ -40,6 +30,16 @@ app.use(
     path: ["/api/auth/login", "/api/auth/register"],
   })
 );
+
+app.use(cors());
+app.use(
+  bodyparser({
+    // 解析请求体
+    enableTypes: ["json", "form", "text"],
+  })
+);
+
+app.use(logger());
 
 app.use(authRoutes.routes()).use(authRoutes.allowedMethods());
 
