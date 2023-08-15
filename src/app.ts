@@ -3,6 +3,7 @@ import cors from '@koa/cors'
 import bodyparser from 'koa-bodyparser'
 import logger from 'koa-logger'
 import authRoutes from './routes/auth'
+import "./db"
 
 const app = new Koa()
 
