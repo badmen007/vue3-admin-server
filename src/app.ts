@@ -4,6 +4,7 @@ import bodyparser from "koa-bodyparser";
 import logger from "koa-logger";
 import jwt from "koa-jwt";
 import authRoutes from "./routes/auth";
+import rolesRoutes from "./routes/role";
 import { jwtSecret } from "./config/auth";
 import "./db";
 
@@ -42,6 +43,7 @@ app.use(
 app.use(logger());
 
 app.use(authRoutes.routes()).use(authRoutes.allowedMethods());
+app.use(rolesRoutes.routes()).use(rolesRoutes.allowedMethods())
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

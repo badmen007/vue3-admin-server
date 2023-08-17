@@ -8,7 +8,11 @@ import {
   Comment,
   AllowNull,
   Default,
+  BelongsToMany,
 } from "sequelize-typescript";
+
+import Role from "./Role.model";
+import UserRole from "./UserRole.model";
 
 export interface UserAttributes {
   id: number;
@@ -70,5 +74,8 @@ class User extends Model<UserAttributes, UserCreationAttributes> {
   @Default(1)
   @Column
   status: boolean;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Role[]
 }
 export default User;
