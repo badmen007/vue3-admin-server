@@ -3,6 +3,7 @@ import {
   registerController,
   loginController,
   LoginModel,
+  userInfoController,
 } from "../controller/auth";
 import { UserAttributes } from "../db/models/User.model";
 
@@ -29,5 +30,11 @@ router.post("/register", async (ctx) => {
 router.post("/login", async (ctx) => {
   ctx.body = await loginController(ctx.request.body as LoginModel);
 });
+
+
+router.post("/info", async ctx => {
+  const token = ctx.header.authorization || (ctx.request.body as any).token;
+  ctx.body = await userInfoController(token);
+})
 
 export default router;

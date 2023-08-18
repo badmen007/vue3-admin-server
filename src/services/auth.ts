@@ -3,6 +3,7 @@ import { UserWhereProps } from "./types";
 import { createHmac } from "../utils/createHmac";
 
 import { WhereOptions } from "sequelize";
+import { RoleModel } from "../db/models";
 /**
  * 创建用户
  */
@@ -53,3 +54,30 @@ export const getUserInfo = async ({
   if (result == null) return null;
   return result.toJSON() as UserAttributes;
 };
+
+export const getUserInfoAndRoles = async (id: number) => {
+  console.log(id)
+  const user = await UserModel.findOne({
+    attributes: [
+      "id",
+      "username",
+      "email",
+      "mobile",
+      "isSuper",
+      "status",
+      "avatar",
+      "description"
+    ],
+    where: {
+      id
+    },
+    include: [
+      //连表查询
+      {
+        model: RoleModel,
+        attributes: ["id", "name", "description"]
+      }
+    ]
+  })
+  return user
+}
