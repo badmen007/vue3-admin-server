@@ -8,7 +8,10 @@ import {
   Comment,
   Default,
   AllowNull,
+  BelongsToMany,
 } from "sequelize-typescript";
+import Role from "./Role.model";
+import RoleAccess from "./RoleAccess.model";
 
 export interface AccessAttributes {
   id: number;
@@ -24,7 +27,6 @@ export interface AccessAttributes {
 }
 
 interface UserRoleCreationAttributes extends Optional<AccessAttributes, "id"> {}
-
 @Table({ tableName: "access" })
 class Access extends Model<AccessAttributes, UserRoleCreationAttributes> {
   @PrimaryKey //主键
@@ -72,6 +74,9 @@ class Access extends Model<AccessAttributes, UserRoleCreationAttributes> {
   @Comment("描述")
   @Column
   description: string;
-}
 
+  // 一个菜单关联多个角色
+  @BelongsToMany(() => Role, () => RoleAccess)
+  roles: Role[];
+}
 export default Access;

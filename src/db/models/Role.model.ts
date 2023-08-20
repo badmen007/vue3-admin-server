@@ -14,6 +14,8 @@ import {
 
 import User from "./User.model";
 import UserRole from "./UserRole.model";
+import RoleAccess from "./RoleAccess.model";
+import Access from "./Access.model";
 
 // 角色表中需要的属性
 export interface RoleAttributes {
@@ -52,6 +54,10 @@ class Role extends Model<RoleAttributes, RoleCreationAttributes> {
   // 一个角色关联多个用户
   @BelongsToMany(() => User, () => UserRole)
   users: User[];
+
+  // 一个角色关联多个权限
+  @BelongsToMany(() => Access, () => RoleAccess)
+  access: Access[];
 }
 
 export default Role;
